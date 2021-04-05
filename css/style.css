@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	padding: 0;
+	color: ghostwhite;
 }
 
 div {
@@ -29,7 +30,8 @@ div {
 .notepad-body {
 	display: flex;
     width: 100%;
-    height: 75%;
+    /* height: 75%; */
+	height: 100%;
 	margin: auto;
 	position: relative;
 }
@@ -116,16 +118,94 @@ div {
     margin: 0;
 }
 
-.console-text {
+.console-output {
+	height: 100%;
+	width: 100%;
+	background-color: aliceblue;
+	position: relative;
+}
+.console-input {
 	width: 100%;
 	display: block;
 	outline: none;
 	border: none;
 	padding: 0;
-	height: 18px;
+	height: 22px;
 	bottom: 0;
 	margin: auto;
 	background-color: #3E3E42;
 	color: ghostwhite;
-	
+	position: relative;
+}
+.console-footer {
+	width: 100%;
+	display: block;
+	outline: none;
+	border: none;
+	padding: 0;
+	height: 20px;
+	bottom: 0;
+	margin: auto;
+	background-color: #3E3E42;
+	color: ghostwhite;
+	position: relative;
+}
+
+/* inspector */
+.inspector {
+	padding: 0;
+    margin: 0;
+    list-style: none;
+	padding-left: 15px;
+}
+
+.inspector > li > span > ul {
+	padding-left: 17px;
+	list-style: none;
+}
+
+.inspector > li {
+	border-top: 1px black solid;
+}
+
+
+.inspector > .ins-item:hover{
+	background-color: #303840;
+}
+/*
+.inspector > .ins-list:hover{
+	background-color: #303840;
+}*/
+
+
+.inspector > li > span {
+	padding-left: 30px;
+}
+
+.inspector-main {
+	border-bottom: 1px solid black;
+}
+
+.ins-list > a {
+	color: #ff9e59;
+	text-decoration: none;
+	display: block;
+	position: fixed;
+	width: 100%;
+}
+
+.ins-list > a:hover{
+	color: #cc7832;
+	background-color: #303840;
+}
+
+.ins-item > span {
+	width: 50%;
+	text-align: left;
+	padding-right: 10px;
+	float: right;
+}
+
+.hide {
+	display: none;
 }

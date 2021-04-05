@@ -6,8 +6,9 @@
 	</head>
 	<body>
 		<div class="main-container">
-			<div class="notepad-header">
-			</div>
+		<!-- HEADER
+		 	<div class="notepad-header"></div>
+		-->	
 			<div class="notepad-body">
 					<div class="notepad-script">
 						<div class="notepad-lines">
@@ -30,10 +31,10 @@
 							</ul>
 						</div>
 						<pre class="lasm-script">local function TestOne(arg1, arg2)
-			local var3 = arg1 .. 2
-			local var4 = 3 .. arg2
-			return var4 .. var3
-		end
+    local var3 = arg1 .. 2
+    local var4 = 3 .. arg2
+    return var4 .. var3
+end
 
 -- 1
 -- 2
@@ -50,13 +51,122 @@
 						</pre>
 					</div>
 					<div class="notepad-lasm">
-
+					<ul class="inspector inspector-main">
+						<li class="ins-item">Name<span>Test1</span></li>
+						<li class="ins-item">Returns<span>2</span></li>
+						<li class="ins-item">Upvalues<span>41</span></li>
+						<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
+							<li class="ins-item">Name<span>Test1</span></li>
+							<li class="ins-item">Returns<span>2</span></li>
+							<li class="ins-item">Upvalues<span>41</span></li>
+							<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
+								<li class="ins-item">Name<span>Test1</span></li>
+								<li class="ins-item">Returns<span>2</span></li>
+								<li class="ins-item">Upvalues<span>41</span></li>
+								<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
+									<li class="ins-item">Name<span>Test1</span></li>
+									<li class="ins-item">Returns<span>2</span></li>
+									<li class="ins-item">Upvalues<span>41</span></li>
+									<li class="ins-item">test<span>8</span></li>
+									<li class="ins-item">blah<span>123</span></li>
+									<li class="ins-item">args<span>1</span></li>
+									<li class="ins-item">Test<span>13</span></li>
+									<li class="ins-item">Test<span>3</span></li>
+								</ul></span></li>
+								<li class="ins-item">test<span>8</span></li>
+								<li class="ins-item">blah<span>123</span></li>
+								<li class="ins-item">args<span>1</span></li>
+								<li class="ins-item">Test<span>13</span></li>
+								<li class="ins-item">Test<span>3</span></li>
+							</ul></span></li>
+							<li class="ins-item">test<span>8</span></li>
+							<li class="ins-item">blah<span>123</span></li>
+							<li class="ins-item">args<span>1</span></li>
+							<li class="ins-item">Test<span>13</span></li>
+							<li class="ins-item">Test<span>3</span></li>
+						</ul></span></li>
+						<li class="ins-item">test<span>8</span></li>
+						<li class="ins-item">blah<span>123</span></li>
+						<li class="ins-item">args<span>1</span></li>
+						<li class="ins-item">Test<span>13</span></li>
+						<li class="ins-item">Test<span>3</span></li>
+					</ul>
+					
+					<!-- OLD
+						<div class="lasm-note"></div>
+						<div class="lasm-info"></div>
+						<div class="lasm-func">
+							<div class="lasm-func-note"></div>
+							<div class="lasm-func-info"></div>
+							<table class="lasm-instructions">
+								<tr class="lasm-instr"><td class="lasm-addr">1</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
+								<tr class="lasm-instr"><td class="lasm-addr">2</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
+								<tr class="lasm-instr"><td class="lasm-addr">3</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
+								<tr class="lasm-instr"><td class="lasm-addr">4</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
+								<tr class="lasm-instr"><td class="lasm-addr">5</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
+							</table>
+							<div class="lasm-extra">
+								<div class="lasm-constants">
+									<!-- TABLE -- >
+								</div>
+								<div class="lasm-upvalues">
+									<!-- TABLE -- >
+								</div>
+								<!-- TODO: add globals etc -- >
+							</div>
+						</div>
 					</div>
+					 -->
 				</div>
+		<!-- FOOTER
 			<div class="notepad-footer">
 				<div class="notepad-console">
-				<input class="console-text" type="text"/>
+					<div class="console-output"></div>
+					<input class="console-input" type="text"/>
+					<div class="console-footer"></div>
 				</div>
 			</div>
+		-->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script>
+		$(function(){
+			console.log("test!");
+		});
+		
+		// handle list inspector
+		$("ul.inspector a").click(function(e) {
+		   var list = $(this).parent().find(".inspector").first();
+			if(list.hasClass("hide"))
+			{
+				list.removeClass("hide");
+			}else{
+				list.addClass("hide");
+			}
+		});
+		
+		// test
+		var response = [{
+		  "Name":"test",
+		  "Value":"1"
+		 },
+		 {
+		   "Name":"6",
+		   "Value":"Tala"
+		}];
+
+		// convert string to JSON
+		//response = $.parseJSON(response);
+
+		$(function() {
+			$.each(response, function(i, item) {
+				var $tr = $('<tr>').append(
+					$('<td>').text(item.rank),
+					$('<td>').text(item.content),
+					$('<td>').text(item.UID)
+				); //.appendTo('#records_table');
+				console.log($tr.wrap('<p>').html());
+			});
+		});
+		</script>
 	</body>
 </html>
