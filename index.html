@@ -30,93 +30,33 @@
 								<li>15</li>
 							</ul>
 						</div>
-						<pre class="lasm-script">local function TestOne(arg1, arg2)
-    local var3 = arg1 .. 2
-    local var4 = 3 .. arg2
-    return var4 .. var3
-end
-
--- 1
--- 2
--- 3
--- 4
--- 5
--- 6
--- 7
--- 8
--- 9
--- 10
--- 1
--- 2
+						<pre class="lasm-script"> local function getSqSegDist(pv, p1, p2) 
+     local x = p1.x 
+     local y = p1.y 
+     local z = p1.z 
+     local dx = p2.x - x 
+     local dy = p2.y - y 
+     local dz = p2.z - z 
+     if dx ~= 0 or dy ~= 0 and x == p1.x and dz ~= 0 then  -- Blocks 0 to 3
+         local t = ((p.x - x) * dx + (p.y - y) * dy + (p.z - z) * dz) / (dx * dx + dy * dy + dz * dz) 
+         if t > 1 then  -- Block 4
+             x = p2.x 
+             y = p2.y 
+             z = p2.z 
+         elseif t > 0 then  -- Block 6
+             x = x + dx * t 
+             y = y + dy * t 
+             z = z + dz * t 
+         end 
+     end 
+     dx = p.x - x 
+     dy = p.y - y 
+     dz = p.z - z 
+     return dx * dx + dy * dy + dz * dz 
+ end 
 						</pre>
 					</div>
 					<div class="notepad-lasm">
-					<ul class="inspector inspector-main">
-						<li class="ins-item">Name<span>Test1</span></li>
-						<li class="ins-item">Returns<span>2</span></li>
-						<li class="ins-item">Upvalues<span>41</span></li>
-						<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
-							<li class="ins-item">Name<span>Test1</span></li>
-							<li class="ins-item">Returns<span>2</span></li>
-							<li class="ins-item">Upvalues<span>41</span></li>
-							<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
-								<li class="ins-item">Name<span>Test1</span></li>
-								<li class="ins-item">Returns<span>2</span></li>
-								<li class="ins-item">Upvalues<span>41</span></li>
-								<li class="ins-list"><a href="#">Functions</a><span><ul class="inspector  hide">
-									<li class="ins-item">Name<span>Test1</span></li>
-									<li class="ins-item">Returns<span>2</span></li>
-									<li class="ins-item">Upvalues<span>41</span></li>
-									<li class="ins-item">test<span>8</span></li>
-									<li class="ins-item">blah<span>123</span></li>
-									<li class="ins-item">args<span>1</span></li>
-									<li class="ins-item">Test<span>13</span></li>
-									<li class="ins-item">Test<span>3</span></li>
-								</ul></span></li>
-								<li class="ins-item">test<span>8</span></li>
-								<li class="ins-item">blah<span>123</span></li>
-								<li class="ins-item">args<span>1</span></li>
-								<li class="ins-item">Test<span>13</span></li>
-								<li class="ins-item">Test<span>3</span></li>
-							</ul></span></li>
-							<li class="ins-item">test<span>8</span></li>
-							<li class="ins-item">blah<span>123</span></li>
-							<li class="ins-item">args<span>1</span></li>
-							<li class="ins-item">Test<span>13</span></li>
-							<li class="ins-item">Test<span>3</span></li>
-						</ul></span></li>
-						<li class="ins-item">test<span>8</span></li>
-						<li class="ins-item">blah<span>123</span></li>
-						<li class="ins-item">args<span>1</span></li>
-						<li class="ins-item">Test<span>13</span></li>
-						<li class="ins-item">Test<span>3</span></li>
-					</ul>
-					
-					<!-- OLD
-						<div class="lasm-note"></div>
-						<div class="lasm-info"></div>
-						<div class="lasm-func">
-							<div class="lasm-func-note"></div>
-							<div class="lasm-func-info"></div>
-							<table class="lasm-instructions">
-								<tr class="lasm-instr"><td class="lasm-addr">1</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
-								<tr class="lasm-instr"><td class="lasm-addr">2</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
-								<tr class="lasm-instr"><td class="lasm-addr">3</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
-								<tr class="lasm-instr"><td class="lasm-addr">4</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
-								<tr class="lasm-instr"><td class="lasm-addr">5</td><td class="lasm-opcode">CLOSURE</td><td class="lasm-operands">0 0</td><td class="lasm-note">-- function unknown()</td></tr>
-							</table>
-							<div class="lasm-extra">
-								<div class="lasm-constants">
-									<!-- TABLE -- >
-								</div>
-								<div class="lasm-upvalues">
-									<!-- TABLE -- >
-								</div>
-								<!-- TODO: add globals etc -- >
-							</div>
-						</div>
-					</div>
-					 -->
 				</div>
 		<!-- FOOTER
 			<div class="notepad-footer">
@@ -132,39 +72,80 @@ end
 		$(function(){
 			console.log("test!");
 		});
-		
-		// handle list inspector
-		$("ul.inspector a").click(function(e) {
-		   var list = $(this).parent().find(".inspector").first();
-			if(list.hasClass("hide"))
-			{
-				list.removeClass("hide");
-			}else{
-				list.addClass("hide");
-			}
-		});
-		
+
 		// test
-		var response = [{
-		  "Name":"test",
-		  "Value":"1"
-		 },
-		 {
-		   "Name":"6",
-		   "Value":"Tala"
-		}];
+		var response = "";
 
 		// convert string to JSON
 		//response = $.parseJSON(response);
-
+		
+		function parseFunc(index, func) {
+			index++;
+			console.log("[Parsing][" + func.ScriptFunction.Name + "] Blocks count: " + func.ScriptFunction.Blocks.length);
+			
+			var newInspector = $("<ul>").addClass("inspector");
+			var blockInspector = $("<ul>").addClass("inspector").addClass("hide")
+			
+			newInspector.append(
+				$("<li>").addClass("ins-item").text("Name").append($("<span>").text((func.ScriptFunction.IsLocal ? "local " : "") + func.ScriptFunction.Name + "()")), // TODO: add args
+				$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("Blocks")).append($("<span>").append(blockInspector))
+			);
+			
+			// build Blocks (array)		
+			$.each(func.ScriptFunction.Blocks, function(i, item) {
+				var newBlock = $("<ul>").addClass("inspector").addClass("hide");
+				
+				newBlock.append($("<li>").addClass("ins-item").text("ifChainIndex").append($("<span>").text(item.ifChainIndex)));
+				newBlock.append($("<li>").addClass("ins-item").text("JumpsNext").append($("<span>").text(item.JumpsTo)));
+				newBlock.append($("<li>").addClass("ins-item").text("JumpsTo").append($("<span>").text(item.JumpsNext)));
+				
+				
+				var blockLines = $("<ul>").addClass("inspector").addClass("hide");
+				$.each(item.Lines, function(i, item) {
+					blockLines.append(
+						$("<li>").addClass("ins-item").append(
+							$("<span>").text("[" + i + "]")
+						).text(item.Text)
+					);
+				})
+				newBlock.append(
+					$("<li>").addClass("ins-list").append(
+						$("<a>").attr("href", "#").text("Lines")
+					).append(
+						$("<span>").append(blockLines)
+					)
+				)
+				
+				blockInspector.append(
+					$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("[" + i + "]").append($("<span>").addClass("lasm-note").text(" - " + item.StartAddress + ": JMP: " + item.JumpsTo + ", ELSE: " + item.JumpsNext))).append(
+						$("<span>").append(newBlock)
+					)
+				)
+			});
+			
+			// Instructions
+			
+			$.each(func.Functions, function(i, item) {
+				parseFunc(i, item)
+			});
+			
+			console.log(newInspector)
+			return newInspector;
+		}
+		
 		$(function() {
-			$.each(response, function(i, item) {
-				var $tr = $('<tr>').append(
-					$('<td>').text(item.rank),
-					$('<td>').text(item.content),
-					$('<td>').text(item.UID)
-				); //.appendTo('#records_table');
-				console.log($tr.wrap('<p>').html());
+			// initialise inspector
+			$(".notepad-lasm").append(parseFunc(-1, response).addClass("inspector-main"));
+			
+			// handle inspector events (after inspector is initialised!)
+			$("ul.inspector a").click(function(e) {
+				var list = $(this).parent().find(".inspector").first();
+				if(list.hasClass("hide"))
+				{
+					list.removeClass("hide");
+				}else{
+					list.addClass("hide");
+				}
 			});
 		});
 		</script>
