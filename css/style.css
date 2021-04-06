@@ -78,7 +78,8 @@ div {
 }
 
 .lasm-note {
-	color: #a0a0e0;
+	/* color: #a0a0e0; */
+	color: #8686b5;
 }
 
 .lasm-script {
@@ -159,7 +160,7 @@ div {
 	padding: 0;
     margin: 0;
     list-style: none;
-	padding-left: 15px;
+	padding-left: 2px;
 }
 
 .inspector > li > span > ul {
@@ -173,7 +174,7 @@ div {
 
 
 .inspector > .ins-item:hover{
-	background-color: #303840;
+	background-color: #ffffff10;
 }
 /*
 .inspector > .ins-list:hover{
@@ -196,7 +197,7 @@ div {
 
 .ins-list > a:hover{
 	color: #cc7832;
-	background-color: #303840;
+	background-color: #ffffff10;
 }
 
 .ins-item > span {
@@ -208,4 +209,26 @@ div {
 
 .hide {
 	display: none;
+}
+
+li.block-if {
+	background-color: #FFCC002F;
+}
+
+li.block-else {
+	background-color: #0094FF2F;
+}
+
+li.block-endif {
+	background-color: #8002842F;
+}
+
+li.block-end {
+	background-color: #8416052F;
+}
+
+/* highlight text */
+li.block-if:hover ~ .s-block-if {
+	background-color: #bec1001f;
+    outline: 1px solid #9e9e9e;
 }
