@@ -12,49 +12,9 @@
 			<div class="notepad-body">
 					<div class="notepad-script">
 						<div class="notepad-lines">
-							<ul>
-								<li>1</li>
-								<li>2</li>
-								<li>3</li>
-								<li>4</li>
-								<li>5</li>
-								<li>6</li>
-								<li>7</li>
-								<li>8</li>
-								<li>9</li>
-								<li>10</li>
-								<li>11</li>
-								<li>12</li>
-								<li>13</li>
-								<li>14</li>
-								<li>15</li>
-							</ul>
+							<ul></ul>
 						</div>
-						<pre class="lasm-script"> local function getSqSegDist(pv, p1, p2) 
-     local x = p1.x 
-     local y = p1.y 
-     local z = p1.z 
-     local dx = p2.x - x 
-     local dy = p2.y - y 
-     local dz = p2.z - z 
-     if dx ~= 0 or dy ~= 0 and x == p1.x and dz ~= 0 then  -- Blocks 0 to 3
-<span class="s-block-if block-4">         local t = ((p.x - x) * dx + (p.y - y) * dy + (p.z - z) * dz) / (dx * dx + dy * dy + dz * dz) 
-         if t > 1 then</span>  -- Block 4
-             x = p2.x 
-             y = p2.y 
-             z = p2.z 
-         elseif t > 0 then  -- Block 6
-             x = x + dx * t 
-             y = y + dy * t 
-             z = z + dz * t 
-         end 
-     end 
-     dx = p.x - x 
-     dy = p.y - y 
-     dz = p.z - z 
-     return dx * dx + dy * dy + dz * dz 
- end 
-						</pre>
+						<pre class="lasm-script"></pre>
 					</div>
 					<div class="notepad-lasm">
 				</div>
@@ -68,126 +28,15 @@
 			</div>
 		-->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script defer src="js/inspector.js"></script>
+		<script defer src="js/code.js"></script>
 		<script>
-		$(function(){
-			console.log("test!");
-		});
-
-		// test
-		var response = "";
-
-		// convert string to JSON
-		//response = $.parseJSON(response);
-		
-		function parseFunc(index, func) {
-			index++;
-			console.log("[Parsing][" + func.ScriptFunction.Name + "] Blocks count: " + func.ScriptFunction.Blocks.length);
-			
-			var newInspector = $("<ul>").addClass("inspector");
-			var upvaluesInspector = $("<ul>").addClass("inspector").addClass("hide")
-			var constantsInspector = $("<ul>").addClass("inspector").addClass("hide")
-			var blockInspector = $("<ul>").addClass("inspector").addClass("hide")
-			var childFuncInspector = $("<ul>").addClass("inspector").addClass("hide")
-			
-			// append properties main Inspector
-			newInspector.append(
-				$("<li>").addClass("ins-item").text("Name").append($("<span>").text((func.ScriptFunction.IsLocal ? "local " : "") + func.ScriptFunction.Name + "()")), // TODO: add args
-				$("<li>").addClass("ins-item").text("UpvaluesCount").append($("<span>").text(func.UpvaluesCount)),
-				$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("Upvalues (" + func.Upvalues.length + ")")).append($("<span>").append(constantsInspector)),
-				$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("Constants (" + func.Constants.length + ")")).append($("<span>").append(upvaluesInspector)),
-				$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("Blocks (" + func.ScriptFunction.Blocks.length + ")")).append($("<span>").append(blockInspector)),
-				$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("Functions (" + func.Functions.length + ")")).append($("<span>").append(childFuncInspector))
-			);
-			
-			// build Blocks (array)		
-			$.each(func.ScriptFunction.Blocks, function(i, item) {
-				var newBlock = $("<ul>").addClass("inspector").addClass("hide");
-				newBlock.append($("<li>").addClass("ins-item").text("ifChainIndex").append($("<span>").text(item.ifChainIndex)));
-				newBlock.append($("<li>").addClass("ins-item").text("JumpsNext").append($("<span>").text(item.JumpsTo)));
-				newBlock.append($("<li>").addClass("ins-item").text("JumpsTo").append($("<span>").text(item.JumpsNext)));
-				
-				// append Line to Lines
-				// append Instruction to Instructions
-				var blockLines = $("<ul>").addClass("inspector").addClass("hide");
-				var blockInstructions = $("<ul>").addClass("inspector").addClass("hide");
-				$.each(item.Lines, function(i, b) {
-					blockLines.append(
-						$("<li>").addClass("ins-item").append(
-							$("<span>").text("[" + i + "]")
-						).text(b.Text)
-					);
-					var instr = item.Lines[i].Instr;
-					blockInstructions.append(
-						$("<li>").addClass("ins-item").append(
-							$("<span>").text("[" + i + "]")
-						).text(instr.OpCode + " " + instr.Op1 + " " + instr.Op2 + " " + instr.Op3) // TODO fix this
-					);
-				})
-				
-				// append Lines to Block
-				newBlock.append(
-					$("<li>").addClass("ins-list").append(
-						$("<a>").attr("href", "#").text("Lines (" + item.Lines.length + ")")
-					).append(
-						$("<span>").append(blockLines)
-					)
-				)
-				
-				// append Instructions to Block
-				newBlock.append(
-					$("<li>").addClass("ins-list").append(
-						$("<a>").attr("href", "#").text("Instructions (" + item.Lines.length + ")")
-					).append(
-						$("<span>").append(blockInstructions)
-					)
-				)
-				
-				var addNoteClass = "";
-				
-				// rules based on https://ferib.dev/blog.php?l=post/Lua_Devirtualization_Part_2_Decompiling_Lua#BlockDefinitions
-				if(item.JumpsTo != -1 && item.JumpsNext != -1) // TODO: check opcode?
-					addNoteClass = "block-if";
-				else if (item.JumpsTo != -1 && item.JumpsNext == -1)
-					addNoteClass = "block-else";
-				else if (item.JumpsTo == -1 && item.JumpsNext != -1)
-					addNoteClass = "block-endif";
-				else if (item.JumpsTo == -1 && item.JumpsNext == -1)
-					addNoteClass = "block-end";
-					
-				// append Block to Function
-				blockInspector.append(
-					$("<li>").addClass("ins-list").append($("<a>").attr("href", "#").text("[" + i + "]").append($("<span>").addClass("lasm-note").text(" - " + item.StartAddress + ": JMP: " + item.JumpsTo + ", ELSE: " + item.JumpsNext))).addClass(addNoteClass).append(
-						$("<span>").append(newBlock)
-					)
-				)
-			});
-			
-			// build Upvalues
-			$.each(func.Upvalues, function(i, item) {
-				upvaluesInspector.append(
-					$("<li>").addClass("ins-item").text("[" + i + "]").append($("<span>").text("\"" + item.Value + "\""))
-				)
-			})
-
-
-			// build Constants
-			$.each(func.Constants, function(i, item) {
-				constantsInspector.append(
-					$("<li>").addClass("ins-item").text("[" + i + "]").append($("<span>").text("\"" + item.Value + "\""))
-				)
-			})
-			
-			// append Functions to Function
-			$.each(func.Functions, function(i, item) {
-				childFuncInspector.append(parseFunc(i, item))
-			});
-
-			return newInspector;
-		}
-		
 		$(function() {
-			// initialise inspector
-			$(".notepad-lasm").append(parseFunc(-1, response).addClass("inspector-main"));
+			
+			$(".notepad-lasm").append(inspector.buildInspector().addClass("inspector-main"));
+			
+			// write root fun
+			inspector.writeFunc(1)
 			
 			// handle inspector events (after inspector is initialised!)
 			$("ul.inspector a").click(function(e) {
@@ -198,6 +47,12 @@
 				}else{
 					list.addClass("hide");
 				}
+			});
+			$(".lasm-func").click(function(e) {
+				$(".lasm-script").text(""); // clear
+				$(".notepad-lines > ul").empty(); // clear
+				var funcClickIndex = $(".lasm-func").index($(this));
+				inspector.writeFunc(funcClickIndex)
 			});
 		});
 		</script>

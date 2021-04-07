@@ -82,6 +82,10 @@ div {
 	color: #8686b5;
 }
 
+.lasm-func {
+	text-decoration: underline !important;
+}
+
 .lasm-script {
 	font-size: 16px;
 	line-height: 18px;
@@ -164,7 +168,7 @@ div {
 }
 
 .inspector > li > span > ul {
-	padding-left: 17px;
+	padding-left: 9px;
 	list-style: none;
 }
 
@@ -187,7 +191,7 @@ div {
 	border-bottom: 1px solid black;
 }
 
-.ins-list > a {
+.ins-list > a, .ins-item > span > a {
 	color: #ff9e59;
 	text-decoration: none;
 	display: block;
@@ -228,7 +232,12 @@ li.block-end {
 }
 
 /* highlight text */
-li.block-if:hover ~ .s-block-if {
+li.block-if:hover ~ .sblock-if {
+	background-color: #bec1001f;
+    outline: 1px solid #9e9e9e;
+}
+
+.sblock-if:hover {
 	background-color: #bec1001f;
     outline: 1px solid #9e9e9e;
 }
