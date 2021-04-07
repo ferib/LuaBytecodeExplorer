@@ -29,30 +29,31 @@
 		-->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 		<script defer src="js/inspector.js"></script>
-		<script defer src="js/code.js"></script>
 		<script>
 		$(function() {
-			
-			$(".notepad-lasm").append(inspector.buildInspector().addClass("inspector-main"));
-			
-			// write root fun
-			inspector.writeFunc(1)
-			
-			// handle inspector events (after inspector is initialised!)
-			$("ul.inspector a").click(function(e) {
-				var list = $(this).parent().find(".inspector").first();
-				if(list.hasClass("hide"))
-				{
-					list.removeClass("hide");
-				}else{
-					list.addClass("hide");
-				}
-			});
-			$(".lasm-func").click(function(e) {
-				$(".lasm-script").text(""); // clear
-				$(".notepad-lines > ul").empty(); // clear
-				var funcClickIndex = $(".lasm-func").index($(this));
-				inspector.writeFunc(funcClickIndex)
+			inspector.initFromUrl(function() {
+				$(".notepad-lasm").append(inspector.buildInspector().addClass("inspector-main"));
+				$("pre.lasm-script").empty();
+				$("pre.lasm-script").append(inspector.writeFunc(0)) // write root fun
+				
+				// handle inspector events (after inspector is initialised!)
+				$("ul.inspector a").click(function(e) {
+					var list = $(this).parent().find(".inspector").first();
+					if(list.hasClass("hide"))
+					{
+						list.removeClass("hide");
+					}else{
+						list.addClass("hide");
+					}
+				});
+				$(".lasm-func").click(function(e) {
+					$(".lasm-script").text(""); // clear
+					$(".notepad-lines > ul").empty(); // clear
+					
+					var funcClickIndex = $(".lasm-func").index($(this));
+
+					$("pre.lasm-script").append(inspector.writeFunc(funcClickIndex)) // fill
+				});
 			});
 		});
 		</script>

@@ -2,9 +2,16 @@ let inspector = function (){
 	let inspectorObjects;
 	let funcs;
 	
-	let _initt = function(jsonString) {
+	let _init = function() {
 		funcs = [];
-		inspectorObjects = jsonString; // deserialise?
+	}
+	
+	let _initFromUrl = function(callback) {
+		var url = new URL(window.location.href);
+		$.getJSON(url.searchParams.get("file"), function(data){
+			inspectorObjects = data;
+			callback();
+		});
 	}
 	
 	let _buildInspector = function() {
@@ -13,22 +20,23 @@ let inspector = function (){
 	
 	let _parseScript = function(func) {
 		console.log("[Writing] " + func.ScriptFunction.Name)
+		var script = $("<span>"); 
 		$.each(func.ScriptFunction.Blocks, function(i, block) {
 			var blockText = "";
 			$.each(block.Lines, function(i, line) {
 				blockText += line.Text;
 			})
-			$("pre.lasm-script").append(
+			script.append(
 				$("<span>").addClass("sblock-if").text(blockText) // questionable
 			)
 		})
+		return script;
 	}
 	
 	// TODO: this is ugly, cleanup?
 	let _parseFunc = function(index, func) {
 		index++;
 		console.log("[Parsing][" + func.ScriptFunction.Name + "] Blocks count: " + func.ScriptFunction.Blocks.length);
-		var we = inspectorObjects
 		funcs.push(func) // save reference for later
 		
 		var newInspector = $("<ul>").addClass("inspector");
@@ -134,15 +142,16 @@ let inspector = function (){
 	}
 	
 	let _writeFunc = function(index) {
-		_parseScript(funcs[index])
+		return _parseScript(funcs[index])
 	}
 	
 	return {
-		initt: _initt,
+		init: _init,
 		parseScript: _parseScript,
 		parseFunc: _parseFunc,
 		buildInspector: _buildInspector,
-		writeFunc: _writeFunc
+		writeFunc: _writeFunc,
+		initFromUrl: _initFromUrl
 	}
 }();
 inspector.init();
