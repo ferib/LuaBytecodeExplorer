@@ -14,6 +14,7 @@ let inspector = function (){
 		linesCount = [];
 		blocksCount = [];
 		funcsCount = [];
+		currentFunc = -1;
 	}
 	
 	let _initFromUrl = function(callback) {
@@ -33,7 +34,7 @@ let inspector = function (){
 			return currentScript;
 		
 		console.log("[Writing] " + func.ScriptFunction.Name)
-		currentScript = $("<span>");
+		currentScript = $("<code>").addClass("lang-lua");
 		$.each(func.ScriptFunction.Blocks, function(i, block) {
 			var blockText = $("<span>");
 			$.each(block.Lines, function(i, line) {

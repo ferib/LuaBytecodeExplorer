@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
-		<title>Online Interactive Lua Decompiler</title>
+		<title>Interactive Lua Decompiler</title>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link rel="stylesheet" href="css/code-lua.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/lua.min.js"></script>-->
 	</head>
 	<body>
 		<div class="main-container">
@@ -10,14 +13,15 @@
 		 	<div class="notepad-header"></div>
 		-->	
 			<div class="notepad-body">
-					<div class="notepad-script">
-						<div class="notepad-lines">
-							<ul></ul>
-						</div>
-						<pre class="lasm-script"></pre>
+				<div class="notepad-script">
+					<div class="notepad-lines">
+						<ul></ul>
 					</div>
-					<div class="notepad-lasm">
+					<pre class="lasm-script"></pre>
 				</div>
+				<div class="notepad-lasm"></div>
+			</div>
+		</div>
 		<!-- FOOTER
 			<div class="notepad-footer">
 				<div class="notepad-console">
@@ -53,6 +57,7 @@
 					var funcClickIndex = $(".lasm-func").index($(this));
 
 					$("pre.lasm-script").append(inspector.writeFunc(funcClickIndex)) // fill
+					hljs.highlightAll();
 				});
 				
 				// highlights
@@ -87,6 +92,9 @@
 					else
 						target.removeClass("glow");
 				})
+
+				// invoke highlight.js
+				hljs.highlightAll();
 			});
 		});
 		</script>
