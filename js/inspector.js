@@ -33,11 +33,11 @@ let inspector = function (){
 			return currentScript;
 		
 		console.log("[Writing] " + func.ScriptFunction.Name)
-		currentScript = $("<span>"); 
+		currentScript = $("<span>");
 		$.each(func.ScriptFunction.Blocks, function(i, block) {
-			var blockText = "";
+			var blockText = $("<span>");
 			$.each(block.Lines, function(i, line) {
-				blockText += line.Text;
+				blockText.append($("<span>").addClass("sline-default").text(line.Text));
 			})
 			
 			var addNoteClass = "";
@@ -52,9 +52,8 @@ let inspector = function (){
 			else if (block.JumpsTo == -1 && block.JumpsNext == -1)
 				addNoteClass = "sblock-end";
 			
-			currentScript.append(
-				$("<span>").addClass(addNoteClass).text(blockText) // questionable
-			)
+			blockText.addClass(addNoteClass);
+			currentScript.append(blockText) // questionable
 		})
 		return currentScript;
 	}

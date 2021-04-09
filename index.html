@@ -59,20 +59,19 @@
 				$("ul.inspector .insp-block").hover(function(e) {
 					var blockIndex = $(".insp-block").index($(this));
 					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
-					console.log(inspector.highlightBlock(funcIndex, blockIndex))
+					//console.log(inspector.highlightBlock(funcIndex, blockIndex))
 					var i = inspector.highlightBlock(funcIndex, blockIndex)
-					var target = $(".lasm-script > span > span:eq(" + i + ")");
-					if(e.type == "mouseenter")
-						target.addClass("glow")
-					else
-						target.removeClass("glow");
+					var target = $(".lasm-script > span > [class*=sblock-]:eq(" + i + ")");
+					target.trigger("mouseover");
+					target.trigger(e.type);
+					console.log("triggering: " + e.type)
 					//console.log(inspector.highlightBlock(funcIndex, blockhoverIndex));
 				})
 				$("ul.inspector .insp-line").hover(function(e) {
 					var lineIndex = $(".insp-line").index($(this));
 					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
 					var i = inspector.highlightLine(funcIndex, lineIndex)
-					var target = $(".lasm-script > span > span:eq(" + i + ")");
+					var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
 					if(e.type == "mouseenter")
 						target.addClass("glow")
 					else
@@ -81,7 +80,12 @@
 				$("ul.inspector .insp-opcode").hover(function(e) {
 					var opcodeIndex = $(".insp-opcode").index($(this));
 					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
-					console.log(inspector.highlightLine(funcIndex, opcodeIndex))
+					var i = inspector.highlightLine(funcIndex, opcodeIndex);
+					var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
+					if(e.type == "mouseenter")
+						target.addClass("glow")
+					else
+						target.removeClass("glow");
 				})
 			});
 		});
