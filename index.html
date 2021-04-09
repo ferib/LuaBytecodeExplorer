@@ -54,6 +54,23 @@
 
 					$("pre.lasm-script").append(inspector.writeFunc(funcClickIndex)) // fill
 				});
+				
+				// highlights
+				$("ul.inspector .insp-block").hover(function(e) {
+					var blockIndex = $("ul.inspector .insp-block").index($(this));
+					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
+					console.log(inspector.highlightBlock(funcIndex, blockIndex))
+					//console.log(inspector.highlightBlock(funcIndex, blockhoverIndex));
+				})
+				$(".insp-line").hover(function(e) {
+					var lineIndex = $(".insp-line").index($(this));
+					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
+					console.log(inspector.highlightLine(funcIndex, lineIndex))
+				})
+				$("ul.inspector .insp-opcode").hover(function(e) {
+					var opcodeIndex = $(".insp-opcode").index($(this));
+					console.log(opcodeIndex)
+				})
 			});
 		});
 		</script>

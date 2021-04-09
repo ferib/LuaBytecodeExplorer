@@ -241,3 +241,24 @@ li.block-if:hover ~ .sblock-if {
 	background-color: #bec1001f;
     outline: 1px solid #9e9e9e;
 }
+
+.sblock-else:hover {
+	background-color: #0094FF1f;
+    outline: 1px solid #9e9e9e;
+}
+
+.sblock-endif:hover {
+	background-color: #8002841F;
+    outline: 1px solid #9e9e9e;
+}
+
+.sblock-end:hover {
+	background-color: #8416051F;
+    outline: 1px solid #9e9e9e;
+}
+
+.glow {
+	background-color: #0000003F;
+    outline: 1px solid #9e9e9e;
+}
+
