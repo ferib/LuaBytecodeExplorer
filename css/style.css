@@ -16,6 +16,7 @@ div {
 	height: 100vh;
 	background-color: #252525;
 	font-family: consolas;
+	transition-duration: 0.3s;
 }
 
 .notepad-header {
@@ -84,6 +85,7 @@ div {
 
 .lasm-func {
 	text-decoration: underline !important;
+	color: #80c0ff;
 }
 
 .lasm-script {
@@ -262,3 +264,32 @@ li.block-if:hover ~ .sblock-if {
     outline: 1px solid #9e9e9e;
 }
 
+.sline-default {
+	white-space: pre-wrap;
+}
+
+pre > span {
+	white-space: pre-wrap;
+}
+
+.splashscreen {
+	display: block;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	background-color: rebeccapurple
+}
+
+.splash-menu {
+	text-align: center;
+	height: 320px
+}
+
+.splash-dragdrop {
+	width: 320px;
+	height: 200px;
+	border: 1px #ffffff3f dashed;
+	border-radius: 17px;
+	margin-top: 310px;
+}

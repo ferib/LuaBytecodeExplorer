@@ -8,6 +8,13 @@
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/lua.min.js"></script>-->
 	</head>
 	<body>
+		<div class="splashscreen" style="opacity: 0%;">
+			<div class="splash-menu">
+				<img src="img/cromulon_head.png">
+				<span>Show me what you got!</span>
+				<div class="splash-dragdrop"></div>
+			</div>
+		</div>
 		<div class="main-container">
 		<!-- HEADER
 		 	<div class="notepad-header"></div>
@@ -33,69 +40,77 @@
 		-->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 		<script defer src="js/inspector.js"></script>
+		<script defer src="js/ui.js"></script>
 		<script>
+			
 		$(function() {
-			inspector.initFromUrl(function() {
-				$(".notepad-lasm").append(inspector.buildInspector().addClass("inspector-main"));
-				$("pre.lasm-script").empty();
-				$("pre.lasm-script").append(inspector.writeFunc(0)) // write root fun
-				
-				// handle inspector events (after inspector is initialised!)
-				$("ul.inspector a").click(function(e) {
-					var list = $(this).parent().find(".inspector").first();
-					if(list.hasClass("hide"))
-					{
-						list.removeClass("hide");
-					}else{
-						list.addClass("hide");
-					}
-				});
-				$(".lasm-func").click(function(e) {
-					$(".lasm-script").text(""); // clear
-					$(".notepad-lines > ul").empty(); // clear
+			function buildInspector() {
+				inspector.initFromUrl(function() {
+					$(".notepad-lasm").append(inspector.buildInspector().addClass("inspector-main"));
+					$("pre.lasm-script").empty();
+					$("pre.lasm-script").append(inspector.writeFunc(0)) // write root fun
 					
-					var funcClickIndex = $(".lasm-func").index($(this));
+					// inspector actions handler
+					$("ul.inspector a").click(function(e) {
+						var list = $(this).parent().find(".inspector").first();
+						if(list.hasClass("hide"))
+						{
+							list.removeClass("hide");
+						}else{
+							list.addClass("hide");
+						}
+					});
+					$(".lasm-func").click(function(e) {
+						$(".lasm-script").text(""); // clear
+						$(".notepad-lines > ul").empty(); // clear
+						
+						var funcClickIndex = $(".lasm-func").index($(this));
 
-					$("pre.lasm-script").append(inspector.writeFunc(funcClickIndex)) // fill
-					hljs.highlightAll();
+						$("pre.lasm-script").append(inspector.writeFunc(funcClickIndex)) // fill
+						hljs.highlightAll();
+					});
+					
+					// hover handlers
+					$("ul.inspector .insp-block").hover(function(e) {
+						var blockIndex = $(".insp-block").index($(this));
+						var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
+						//console.log(inspector.highlightBlock(funcIndex, blockIndex))
+						var i = inspector.highlightBlock(funcIndex, blockIndex)
+						var target = $(".lasm-script > span > [class*=sblock-]:eq(" + i + ")");
+						target.trigger("mouseover");
+						target.trigger(e.type);
+						console.log("triggering: " + e.type)
+						//console.log(inspector.highlightBlock(funcIndex, blockhoverIndex));
+					})
+					$("ul.inspector .insp-line").hover(function(e) {
+						var lineIndex = $(".insp-line").index($(this));
+						var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
+						var i = inspector.highlightLine(funcIndex, lineIndex)
+						var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
+						if(e.type == "mouseenter")
+							target.addClass("glow")
+						else
+							target.removeClass("glow");
+					})
+					$("ul.inspector .insp-opcode").hover(function(e) {
+						var opcodeIndex = $(".insp-opcode").index($(this));
+						var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
+						var i = inspector.highlightLine(funcIndex, opcodeIndex);
+						var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
+						if(e.type == "mouseenter")
+							target.addClass("glow")
+						else
+							target.removeClass("glow");
+					})
+
+					// invoke highlight.js
+					//hljs.highlightAll();
 				});
-				
-				// highlights
-				$("ul.inspector .insp-block").hover(function(e) {
-					var blockIndex = $(".insp-block").index($(this));
-					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
-					//console.log(inspector.highlightBlock(funcIndex, blockIndex))
-					var i = inspector.highlightBlock(funcIndex, blockIndex)
-					var target = $(".lasm-script > span > [class*=sblock-]:eq(" + i + ")");
-					target.trigger("mouseover");
-					target.trigger(e.type);
-					console.log("triggering: " + e.type)
-					//console.log(inspector.highlightBlock(funcIndex, blockhoverIndex));
-				})
-				$("ul.inspector .insp-line").hover(function(e) {
-					var lineIndex = $(".insp-line").index($(this));
-					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
-					var i = inspector.highlightLine(funcIndex, lineIndex)
-					var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
-					if(e.type == "mouseenter")
-						target.addClass("glow")
-					else
-						target.removeClass("glow");
-				})
-				$("ul.inspector .insp-opcode").hover(function(e) {
-					var opcodeIndex = $(".insp-opcode").index($(this));
-					var funcIndex = $(".insp-func").index($(this).parents(".insp-func"));
-					var i = inspector.highlightLine(funcIndex, opcodeIndex);
-					var target = $(".lasm-script [class*=sline-]:eq(" + i + ")");
-					if(e.type == "mouseenter")
-						target.addClass("glow")
-					else
-						target.removeClass("glow");
-				})
+			};
+			buildInspector()
 
-				// invoke highlight.js
-				hljs.highlightAll();
-			});
+			//$(".main-container").append(ui.showLoader());
+
 		});
 		</script>
 	</body>
